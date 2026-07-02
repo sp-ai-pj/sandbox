@@ -1,4 +1,4 @@
-const { useState, useEffect } = React;
+import { useState, useEffect } from "react";
 
 // ─── Design tokens ───────────────────────────────────────────────
 const T = {
@@ -24,6 +24,11 @@ const GOALS = {
     slipToast: "Logged. A slip is a data point, not a reset — your quit continues.",
     outcomeMetric: "smoke-free at 6 mo",
     outcomeNote: "Outcome data is self-reported with follow-ups at 1, 3 and 6 months. Non-responders count as relapsed.",
+    wearable: {
+      metric: "Resting heart rate", value: "64 bpm", delta: "▼ 4 bpm since quit day",
+      note: "Your heart is already recovering — RHR typically drops within 2–4 weeks of quitting.",
+      source: "Apple Watch · last 7 days",
+    },
     protocols: [
       { id: "varen", name: "Varenicline + weekly counseling", source: "Clinical protocol · Cochrane-reviewed", n: 1902, success: 44, grade: "A", upvotes: 861,
         gist: "Prescription med that blunts nicotine reward, paired with brief weekly check-ins.",
@@ -63,6 +68,11 @@ const GOALS = {
     slipToast: "Logged. One evening doesn't erase twelve days — your progress stands.",
     outcomeMetric: "alcohol-free at 6 mo",
     outcomeNote: "Self-reported with follow-ups at 1, 3 and 6 months. Non-responders count as relapsed.",
+    wearable: {
+      metric: "Overnight HRV", value: "58 ms", delta: "▲ 12 ms since day 1",
+      note: "Alcohol suppresses HRV for up to 5 nights. Yours is climbing — visible proof your recovery is real.",
+      source: "Oura · 7-night average",
+    },
     protocols: [
       { id: "sinclair", name: "Naltrexone (Sinclair Method)", source: "Clinical protocol · prescription required", n: 1204, success: 41, grade: "A", upvotes: 743,
         gist: "Medication taken before drinking that blocks the reward loop, gradually extinguishing the craving itself.",
@@ -99,6 +109,11 @@ const GOALS = {
     slipToast: "Logged. One bad night is noise, not failure — tonight is a fresh data point.",
     outcomeMetric: "insomnia improved at 8 wk",
     outcomeNote: "Improvement = clinically meaningful drop in self-reported Insomnia Severity Index at 8-week follow-up.",
+    wearable: {
+      metric: "Sleep duration", value: "7 h 12 m", delta: "▲ 38 min vs. your baseline week",
+      note: "Objective data confirms your check-ins — your protocol is working, not just feeling like it.",
+      source: "Apple Watch · 7-night average",
+    },
     protocols: [
       { id: "cbti", name: "CBT-I (sleep restriction + stimulus control)", source: "Clinical protocol · first-line per AASM", n: 1610, success: 52, grade: "A", upvotes: 690,
         gist: "Counterintuitive gold standard: temporarily restrict time in bed to rebuild sleep pressure, plus strict bed-only-for-sleep rules.",
@@ -198,6 +213,21 @@ function TodayTab({ g, day, checked, setChecked, tokens, setTokens, toast }) {
         ))}
         <span>— a slip never resets your count.</span>
       </div>
+
+      <SectionLabel>Body signal · one metric that matters for this goal</SectionLabel>
+      <Card>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 8 }}>
+          <div>
+            <div style={{ fontSize: 12, color: T.muted, fontWeight: 700 }}>{g.wearable.metric}</div>
+            <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginTop: 2 }}>
+              <span style={{ fontFamily: displayStack, fontSize: 26, fontWeight: 600 }}>{g.wearable.value}</span>
+              <span style={{ fontSize: 12.5, fontWeight: 800, color: T.breath }}>{g.wearable.delta}</span>
+            </div>
+          </div>
+          <span style={{ fontSize: 10.5, color: T.muted, fontWeight: 700, background: T.bg, padding: "3px 8px", borderRadius: 999, whiteSpace: "nowrap" }}>{g.wearable.source}</span>
+        </div>
+        <div style={{ fontSize: 12.5, color: T.muted, marginTop: 8, lineHeight: 1.5 }}>{g.wearable.note}</div>
+      </Card>
 
       <SectionLabel>Your stake</SectionLabel>
       <Card>
@@ -373,7 +403,7 @@ function BoardTab({ g }) {
 }
 
 // ─── App shell ───────────────────────────────────────────────────
-function App() {
+export default function App() {
   const [goalKey, setGoalKey] = useState("smoking");
   const [pickerOpen, setPickerOpen] = useState(false);
   const [tab, setTab] = useState("today");
@@ -411,8 +441,8 @@ function App() {
 
       <div style={{ maxWidth: 400, margin: "0 auto", background: T.bg, borderRadius: 28, border: `1px solid ${T.line}`, overflow: "hidden", boxShadow: "0 12px 40px rgba(23,33,30,0.12)" }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "16px 18px 0" }}>
-          <div style={{ fontWeight: 800, fontSize: 15, letterSpacing: "-0.01em" }}>
-            KND
+          <div style={{ fontWeight: 800, fontSize: 16, letterSpacing: "0.14em" }}>
+            KN<span style={{ color: T.breath }}>D</span>
           </div>
           <button onClick={() => setPickerOpen(!pickerOpen)}
             style={{ fontSize: 11.5, fontWeight: 800, color: T.muted, background: T.surface, border: `1px solid ${T.line}`, padding: "4px 10px", borderRadius: 999, cursor: "pointer", fontFamily: fontStack }}>
