@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KND — onboarding prototype</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.26.4/babel.min.js"></script>
+  <style> body { margin: 0; } </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel" data-presets="react">
+const { useState, useEffect } = React;
+
+// ─── Tokens (shared with main prototype) ─────────────────────────
+const T = {
+  bg: "#F2F5F3", surface: "#FFFFFF", ink: "#17211E", muted: "#5E6E69",
+  line: "#E2E8E4", breath: "#0F7B63", breathSoft: "#E3F0EB",
+  amber: "#B57F17", amberSoft: "#F7ECD3", coral: "#C74E38", coralSoft: "#F9E7E2",
+  blue: "#2E5E8C", blueSoft: "#E4EDF5",
+};
+const fontStack = "'Manrope', -apple-system, 'Segoe UI', sans-serif";
+const displayStack = "'Fraunces', Georgia, serif";
+
+const GOAL_CHIPS = ["Quit smoking", "Quit vaping", "Quit pouches", "Alcohol-free", "Quit cannabis", "Quit porn", "Stop gambling", "Less scrolling", "Lose weight", "Lower my BP", "Fix my sleep", "Pay off debt"];
+const TRIGGERS = ["Stress", "Boredom", "Late night", "Social settings", "After meals", "Arguments", "Fatigue", "Alcohol"];
+const WHY_STARTERS = ["Present for the people I love", "Mornings that belong to me", "Proof I keep my word to myself", "My health scare was a warning"];
+const PLANS = ["Open Urge SOS and ride the 90 seconds", "Text my pod before acting", "Walk around the block first", "Drink a glass of water, then decide"];
+
+function Btn({ children, onClick, kind = "primary", disabled, style }) {
+  const base = { width: "100%", padding: "15px 0", borderRadius: 14, cursor: disabled ? "default" : "pointer", fontWeight: 800, fontSize: 15, fontFamily: fontStack, border: "none", opacity: disabled ? 0.45 : 1 };
+  const kinds = {
+    primary: { background: T.breath, color: "#fff" },
+    ghost: { background: "transparent", color: T.muted, border: `1.5px solid ${T.line}` },
+    quiet: { background: "transparent", color: T.muted, fontSize: 13.5, fontWeight: 700, padding: "10px 0" },
+  };
+  return <button onClick={disabled ? undefined : onClick} style={{ ...base, ...kinds[kind], ...style }}>{children}</button>;
+}
+
+function Chip({ label, active, onClick, big }) {
+  return (
+    <button onClick={onClick} style={{
+      padding: big ? "12px 16px" : "9px 14px", borderRadius: 999, cursor: "pointer",
+      border: active ? "none" : `1.5px solid ${T.line}`,
+      background: active ? T.breath : T.surface, color: active ? "#fff" : T.ink,
+      fontWeight: 800, fontSize: big ? 13.5 : 13, fontFamily: fontStack,
+    }}>{label}</button>
+  );
+}
+
+function H({ kicker, title, sub }) {
+  return (
+    <div style={{ padding: "6px 2px 18px" }}>
+      {kicker && <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: "0.1em", textTransform: "uppercase", color: T.breath, marginBottom: 8 }}>{kicker}</div>}
+      <div style={{ fontFamily: displayStack, fontSize: 24, lineHeight: 1.25, color: T.ink }}>{title}</div>
+      {sub && <div style={{ fontSize: 13.5, color: T.muted, marginTop: 8, lineHeight: 1.55 }}>{sub}</div>}
+    </div>
+  );
+}
+
+function Toggle({ on, onFlip }) {
+  return (
+    <button onClick={onFlip} aria-pressed={on} style={{ width: 46, height: 27, borderRadius: 999, border: "none", cursor: "pointer", background: on ? T.breath : T.line, position: "relative", flexShrink: 0 }}>
+      <span style={{ position: "absolute", top: 3, left: on ? 22 : 3, width: 21, height: 21, borderRadius: "50%", background: "#fff", transition: "left 160ms ease", boxShadow: "0 1px 3px rgba(0,0,0,0.25)" }} />
+    </button>
+  );
+}
+
+function Onboarding() {
+  const [step, setStep] = useState(0);
+  const [a, setA] = useState({
+    goal: null, why: "", attempts: null, triggers: [], plan: null, planCustom: "",
+    date: null, checkTime: "20:00",
+    notifs: { checkin: true, risk: true, pod: true, milestones: true, news: false },
+    research: null, podVisible: false, acknowledged: false, checkedIn: false,
+  });
+  const set = (patch) => setA({ ...a, ...patch });
+
+  const TOTAL = 10;
+  // Endowed progress: start the bar partly full — completion rates rise when people
+  // feel they've already begun (Nunes & Drèze).
+  const pct = Math.min(15 + (step / TOTAL) * 85, 100);
+
+  const topTrigger = a.triggers[0] || "a craving";
+
+  const canNext = {
+    1: !!a.goal,
+    2: a.why.trim().length > 3,
+    3: a.attempts !== null,
+    4: a.triggers.length > 0,
+    5: !!a.plan || a.planCustom.trim().length > 3,
+    6: !!a.date,
+    7: a.acknowledged,
+    9: a.research !== null,
+  }[step] ?? true;
+
+  const next = () => setStep(step + 1);
+  const back = () => setStep(Math.max(0, step - 1));
+
+  return (
+    <div style={{ minHeight: "100vh", background: "#DDE4DF", fontFamily: fontStack, color: T.ink, padding: "16px 8px" }}>
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;1,400&family=Manrope:wght@400;600;700;800&display=swap');
+        textarea:focus, button:focus-visible { outline: 3px solid ${T.blue}; outline-offset: 2px; }
+      `}</style>
+
+      <div style={{ maxWidth: 400, margin: "0 auto", background: T.bg, borderRadius: 28, border: `1px solid ${T.line}`, overflow: "hidden", boxShadow: "0 12px 40px rgba(23,33,30,0.12)", minHeight: 640, display: "flex", flexDirection: "column" }}>
+
+        {/* Header: back + progress */}
+        <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "16px 18px 8px" }}>
+          {step > 0 && step < TOTAL && (
+            <button onClick={back} aria-label="Back" style={{ border: "none", background: "transparent", fontSize: 18, cursor: "pointer", color: T.muted, padding: 0 }}>←</button>
+          )}
+          <div style={{ flex: 1, height: 6, background: T.line, borderRadius: 999 }}>
+            <div style={{ width: `${pct}%`, height: "100%", background: T.breath, borderRadius: 999, transition: "width 300ms ease" }} />
+          </div>
+          <div style={{ fontWeight: 800, fontSize: 13, letterSpacing: "0.14em" }}>KN<span style={{ color: T.breath }}>D</span></div>
+        </div>
+
+        <div style={{ padding: "8px 18px 18px", flex: 1, display: "flex", flexDirection: "column" }}>
+
+          {/* 0 · Welcome — value before extraction */}
+          {step === 0 && (
+            <div style={{ display: "flex", flexDirection: "column", flex: 1 }}>
+              <H
+                title={<span>Hard things, <em style={{ fontStyle: "italic" }}>actually</em> done.</span>}
+                sub="Protocols ranked by what really worked for thousands of people — honestly measured, relapses included. A pod that has your back. Support at the exact moment it's hardest."
+              />
+              <div style={{ background: T.surface, border: `1px solid ${T.line}`, borderRadius: 16, padding: 14, fontSize: 13, color: T.muted, lineHeight: 1.6 }}>
+                Two minutes of questions — each one shapes your plan. Nothing is shared without your say-so, and you can skip anything.
+              </div>
+              <div style={{ flex: 1 }} />
+              <Btn onClick={next}>Begin</Btn>
+            </div>
+          )}
+
+          {/* 1 · Goal */}
+          {step === 1 && (
+            <div style={{ display: "flex", flexDirection: "column", flex: 1 }}>
+              <H kicker="1 · Your goal" title="What are we doing together?" />
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+                {GOAL_CHIPS.map(g => <Chip key={g} big label={g} active={a.goal === g} onClick={() => set({ goal: g })} />)}
+              </div>
+              <div style={{ flex: 1 }} />
+              <Btn onClick={next} disabled={!canNext}>Continue</Btn>
+            </div>
+          )}
+
+          {/* 2 · The why — self-persuasion */}
+          {step === 2 && (
+            <div style={{ display: "flex", flexDirection: "column", flex: 1 }}>
+              <H kicker="2 · Your reasons" title="Why does this matter to you?"
+                sub="Your own words will reappear at your hardest moments — people are most convinced by reasons they generated themselves." />
+              <textarea
+                value={a.why}
+                onChange={e => set({ why: e.target.value })}
+                placeholder="I'm doing this because…"
+                rows={3}
+                style={{ width: "100%", boxSizing: "border-box", borderRadius: 14, border: `1.5px solid ${T.line}`, padding: 12, fontFamily: fontStack, fontSize: 14.5, resize: "none", background: T.surface, color: T.ink }}
+              />
+              <div style={{ fontSize: 11.5, color: T.muted, margin: "10px 2px 6px", fontWeight: 700 }}>Need a starting point? Tap one, then make it yours:</div>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+                {WHY_STARTERS.map(w => <Chip key={w} label={w} active={false} onClick={() => set({ why: w })} />)}
+              </div>
+              <div style={{ flex: 1 }} />
+              <Btn onClick={next} disabled={!canNext}>Continue</Btn>
+            </div>
+          )}
+
+          {/* 3 · Past attempts — reframed as data */}
+          {step === 3 && (
+            <div style={{ display: "flex", flexDirection: "column", flex: 1 }}>
+              <H kicker="3 · Your history" title="How many serious attempts before this one?" />
+              <div style={{ display: "flex", gap: 8 }}>
+                {["First one", "1–2", "3–5", "6+"].map(o => <Chip key={o} big label={o} active={a.attempts === o} onClick={() => set({ attempts: o })} />)}
+              </div>
+              {a.attempts && a.attempts !== "First one" && (
+                <div style={{ marginTop: 14, background: T.breathSoft, borderRadius: 14, padding: 13, fontSize: 13, color: T.breath, fontWeight: 700, lineHeight: 1.55 }}>
+                  Good. Most successful quits come after several attempts — each one taught your brain something. We'll use what those attempts learned.
+                </div>
+              )}
+              <div style={{ flex: 1 }} />
+              <Btn onClick={next} disabled={!canNext}>Continue</Btn>
+            </div>
+          )}
+
+          {/* 4 · Triggers */}
+          {step === 4 && (
+            <div style={{ display: "flex", flexDirection: "column", flex: 1 }}>
+              <H kicker="4 · Your pattern" title="When does the urge usually hit?"
+                sub="Pick all that apply — your support will be timed to your risk windows, not a generic schedule." />
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+                {TRIGGERS.map(t => (
+                  <Chip key={t} big label={t} active={a.triggers.includes(t)}
+                    onClick={() => set({ triggers: a.triggers.includes(t) ? a.triggers.filter(x => x !== t) : [...a.triggers, t] })} />
+                ))}
+              </div>
+              <div style={{ flex: 1 }} />
+              <Btn onClick={next} disabled={!canNext}>Continue</Btn>
+            </div>
+          )}
+
+          {/* 5 · Implementation intention */}
+          {step === 5 && (
+            <div style={{ display: "flex", flexDirection: "column", flex: 1 }}>
+              <H kicker="5 · Your if-then plan" title={<span>“When <em style={{ fontStyle: "italic" }}>{topTrigger.toLowerCase()}</em> hits, I will…”</span>}
+                sub="Deciding now roughly doubles follow-through compared with deciding in the moment." />
+              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                {PLANS.map(p => (
+                  <button key={p} onClick={() => set({ plan: p, planCustom: "" })} style={{
+                    textAlign: "left", padding: "13px 14px", borderRadius: 14, cursor: "pointer", fontFamily: fontStack,
+                    fontWeight: 700, fontSize: 13.5, lineHeight: 1.4,
+                    border: a.plan === p ? "none" : `1.5px solid ${T.line}`,
+                    background: a.plan === p ? T.breath : T.surface, color: a.plan === p ? "#fff" : T.ink,
+                  }}>{p}</button>
+                ))}
+                <input
+                  value={a.planCustom}
+                  onChange={e => set({ planCustom: e.target.value, plan: null })}
+                  placeholder="…or write your own"
+                  style={{ padding: "13px 14px", borderRadius: 14, border: `1.5px solid ${T.line}`, fontFamily: fontStack, fontSize: 13.5, background: T.surface, color: T.ink }}
+                />
+              </div>
+              <div style={{ flex: 1 }} />
+              <Btn onClick={next} disabled={!canNext}>Lock it in</Btn>
+            </div>
+          )}
+
+          {/* 6 · Start date — fresh start effect */}
+          {step === 6 && (
+            <div style={{ display: "flex", flexDirection: "column", flex: 1 }}>
+              <H kicker="6 · Your day one" title="When do you start?"
+                sub="People follow through more often when a goal starts on a natural fresh start — a Monday, a first of the month." />
+              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                {[["Today", "Momentum is on your side right now"], ["Monday", "The fresh-start favorite ★"], ["1st of next month", "A clean page"]].map(([d, note]) => (
+                  <button key={d} onClick={() => set({ date: d })} style={{
+                    textAlign: "left", padding: "13px 14px", borderRadius: 14, cursor: "pointer", fontFamily: fontStack,
+                    border: a.date === d ? "none" : `1.5px solid ${T.line}`,
+                    background: a.date === d ? T.breath : T.surface,
+                  }}>
+                    <div style={{ fontWeight: 800, fontSize: 14.5, color: a.date === d ? "#fff" : T.ink }}>{d}</div>
+                    <div style={{ fontSize: 12, color: a.date === d ? "#D7EAE3" : T.muted, fontWeight: 600 }}>{note}</div>
+                  </button>
+                ))}
+              </div>
+              <div style={{ flex: 1 }} />
+              <Btn onClick={next} disabled={!canNext}>Continue</Btn>
+            </div>
+          )}
+
+          {/* 7 · Relapse rehearsal — inoculation before it happens */}
+          {step === 7 && (
+            <div style={{ display: "flex", flexDirection: "column", flex: 1 }}>
+              <H kicker="7 · The part other apps skip" title="You might slip. Here's exactly what happens." />
+              <div style={{ background: T.surface, border: `1px solid ${T.line}`, borderRadius: 16, padding: 16, fontSize: 13.5, lineHeight: 1.65 }}>
+                Nothing resets. Your day count survives. You'll get two slip tokens a month, and a slip becomes one thing only: <strong>a data point</strong> — we'll ask what preceded it, and your plan gets smarter.
+                <div style={{ marginTop: 10, color: T.muted, fontSize: 12.5 }}>
+                  Rehearsing the slip now — before it happens — is what turns it from an identity crisis into a step you already know how to take.
+                </div>
+              </div>
+              <div style={{ flex: 1 }} />
+              <Btn kind={a.acknowledged ? "primary" : "ghost"} onClick={() => set({ acknowledged: true })} style={{ marginBottom: 8 }}>
+                {a.acknowledged ? "✓ Understood — a slip won't erase me" : "Tap to acknowledge: a slip won't erase me"}
+              </Btn>
+              <Btn onClick={next} disabled={!canNext}>Continue</Btn>
+            </div>
+          )}
+
+          {/* 8 · Notifications — pre-permission priming + unbundled types */}
+          {step === 8 && (
+            <div style={{ display: "flex", flexDirection: "column", flex: 1 }}>
+              <H kicker="8 · Your reminders, your rules" title="What may we send you?"
+                sub="Your phone will ask once, so here's exactly what you'd get. Max two a day, quiet hours respected, every switch stays in your hands." />
+              <div style={{ background: T.surface, border: `1px solid ${T.line}`, borderRadius: 16, padding: "4px 14px" }}>
+                {[["checkin", "Daily check-in nudge", `at ${a.checkTime}, you choose`], ["risk", "Risk-window support", "timed to your triggers"], ["pod", "Pod activity & SOS", "from your people, not from us"], ["milestones", "Milestones", "day 7, 30, 90"], ["news", "Product news", "off unless you want it"]].map(([k, label, note], i, arr) => (
+                  <div key={k} style={{ display: "flex", alignItems: "center", gap: 10, padding: "12px 0", borderBottom: i < arr.length - 1 ? `1px solid ${T.line}` : "none" }}>
+                    <div style={{ flex: 1 }}>
+                      <div style={{ fontWeight: 800, fontSize: 13.5 }}>{label}</div>
+                      <div style={{ fontSize: 11.5, color: T.muted, fontWeight: 600 }}>{note}</div>
+                    </div>
+                    <Toggle on={a.notifs[k]} onFlip={() => set({ notifs: { ...a.notifs, [k]: !a.notifs[k] } })} />
+                  </div>
+                ))}
+              </div>
+              <div style={{ display: "flex", gap: 6, marginTop: 10, alignItems: "center" }}>
+                <span style={{ fontSize: 12.5, color: T.muted, fontWeight: 700 }}>Check-in time:</span>
+                {["08:00", "12:30", "20:00"].map(t => <Chip key={t} label={t} active={a.checkTime === t} onClick={() => set({ checkTime: t })} />)}
+              </div>
+              <div style={{ flex: 1 }} />
+              <Btn onClick={next}>Enable these</Btn>
+              <Btn kind="quiet" onClick={next}>Not now — I'll decide later</Btn>
+            </div>
+          )}
+
+          {/* 9 · Data consent — unbundled, explicit choice, no dark defaults */}
+          {step === 9 && (
+            <div style={{ display: "flex", flexDirection: "column", flex: 1 }}>
+              <H kicker="9 · Your data" title="Two honest questions." sub="Plain language, real choices, changeable anytime in settings." />
+              <div style={{ background: T.surface, border: `1px solid ${T.line}`, borderRadius: 16, padding: 14 }}>
+                <div style={{ fontWeight: 800, fontSize: 13.5 }}>Contribute anonymized outcomes?</div>
+                <div style={{ fontSize: 12.5, color: T.muted, lineHeight: 1.55, marginTop: 4 }}>
+                  Your check-ins — stripped of anything identifying — improve the success-rate data everyone here relies on. Never sold with your identity. Withdraw anytime.
+                </div>
+                <div style={{ display: "flex", gap: 8, marginTop: 10 }}>
+                  <Chip big label="Yes, count me in" active={a.research === true} onClick={() => set({ research: true })} />
+                  <Chip big label="No thanks" active={a.research === false} onClick={() => set({ research: false })} />
+                </div>
+              </div>
+              <div style={{ background: T.surface, border: `1px solid ${T.line}`, borderRadius: 16, padding: 14, marginTop: 10, display: "flex", alignItems: "center", gap: 10 }}>
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontWeight: 800, fontSize: 13.5 }}>Show my goal to my pod?</div>
+                  <div style={{ fontSize: 12.5, color: T.muted, lineHeight: 1.5, marginTop: 2 }}>Off by default — your pod sees your check-ins either way, never your goal unless you choose.</div>
+                </div>
+                <Toggle on={a.podVisible} onFlip={() => set({ podVisible: !a.podVisible })} />
+              </div>
+              <div style={{ flex: 1 }} />
+              <Btn onClick={next} disabled={!canNext}>Continue</Btn>
+            </div>
+          )}
+
+          {/* 10 · Identity + first win — peak-end */}
+          {step === 10 && (
+            <div style={{ display: "flex", flexDirection: "column", flex: 1, textAlign: "center" }}>
+              <div style={{ flex: 1 }} />
+              <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: "0.1em", textTransform: "uppercase", color: T.breath }}>Starting {a.date || "today"}</div>
+              <div style={{ fontFamily: displayStack, fontStyle: "italic", fontSize: 30, margin: "10px 0 6px" }}>
+                {a.goal === "Quit smoking" ? "You are a non-smoker." : a.goal ? `Your goal: ${a.goal}.` : "You are ready."}
+              </div>
+              <div style={{ fontSize: 13.5, color: T.muted, lineHeight: 1.6, padding: "0 10px" }}>
+                Your reason is saved, your if-then plan is set, your pod is being matched. One small act seals it:
+              </div>
+              <div style={{ background: T.surface, border: `1px solid ${T.line}`, borderRadius: 16, padding: 13, margin: "16px 0", fontFamily: displayStack, fontStyle: "italic", fontSize: 14.5, color: T.ink }}>
+                “{a.why || "My reasons, in my own words."}”
+              </div>
+              <div style={{ flex: 1 }} />
+              {!a.checkedIn ? (
+                <Btn onClick={() => set({ checkedIn: true })}>Log day zero — my first check-in</Btn>
+              ) : (
+                <div style={{ background: T.breathSoft, borderRadius: 14, padding: 15, color: T.breath, fontWeight: 800, fontSize: 14.5 }}>
+                  ✓ First win logged. See you tomorrow at {a.checkTime}.
+                </div>
+              )}
+              <Btn kind="quiet" onClick={() => setStep(0)}>↺ Restart demo</Btn>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<Onboarding />);
+  </script>
+</body>
+</html>
