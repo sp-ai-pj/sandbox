@@ -153,6 +153,375 @@ const GOALS = {
       synthesis: "Rare full consensus: nightly melatonin isn't the tool for chronic sleep problems. Use it short-term for timing shifts (travel, schedule changes) at low doses; for ongoing insomnia, the Grade A answer is CBT-I.",
     },
   },
+
+  vaping: {
+    chip: "Quit vaping",
+    identity: "You are nicotine-free.",
+    sub: (d) => `Day ${d} nicotine-free · started June 20`,
+    checkIn: "Check in — vape-free today",
+    checkedToast: (d) => `Checked in — ${d} days nicotine-free.`,
+    slipLabel: "Log a slip",
+    slipToast: "Logged. A slip is a data point, not a reset — your quit continues.",
+    outcomeMetric: "nicotine-free at 6 mo",
+    outcomeNote: "Self-reported with follow-ups at 1, 3 and 6 months. Non-responders count as relapsed.",
+    wearable: {
+      metric: "Resting heart rate", value: "66 bpm", delta: "▼ 3 bpm since quit day",
+      note: "Nicotine keeps RHR elevated — yours is already settling toward your real baseline.",
+      source: "Apple Watch · last 7 days",
+    },
+    protocols: [
+      { id: "vabrupt", name: "Set date + device disposal", source: "Clinical guidance adapted from smoking evidence", n: 4120, success: 27, grade: "B", upvotes: 2280,
+        gist: "Pick a quit date, get rid of the device and juice the night before. Removes the hand-to-mouth cue entirely.",
+        voices: "“Throwing the vape in the bin was the quit. Everything after was easier than keeping it in a drawer.” — 7 mo" },
+      { id: "vtaper", name: "Nicotine strength step-down, 6 weeks", source: "Community protocol", n: 3860, success: 24, grade: "C", upvotes: 2910,
+        gist: "Drop e-liquid strength every two weeks until zero, then a hard stop on a fixed end date.",
+        voices: "“20 to 10 to 3 to 0 made it feel gradual instead of a cliff.” — 5 mo" },
+      { id: "vtext", name: "Text-support program + pod", source: "Truth Initiative–style program + community", n: 5240, success: 22, grade: "B", upvotes: 1870,
+        gist: "Daily supportive texts timed to your risk windows, plus a pod for the first 30 days.",
+        voices: "“The 11pm message always landed exactly when I was about to cave.” — 4 mo" },
+    ],
+    board: {
+      question: "Should I taper my nicotine strength down, or stop all at once?",
+      consensus: "2 of 3 lean abrupt · 1 conditional",
+      experts: [
+        { role: "Physician", name: "Addiction medicine", stance: "yes", grade: "B",
+          view: "In smoking, trials show abrupt quitting beats gradual reduction for 6-month abstinence. Vaping-specific data is thinner, but the pattern likely transfers: a clean date with support outperforms an open-ended wind-down." },
+        { role: "Behavioral psychologist", name: "Habit & cue psychology", stance: "yes", grade: "B",
+          view: "Tapering keeps the device in your hand, so every cue loop — pocket, hand-to-mouth, screen breaks — stays alive. Abrupt quitting plus removing the object breaks the ritual, not just the dose." },
+        { role: "Pharmacologist", name: "Clinical pharmacology", stance: "caveat", grade: "C",
+          view: "Tapers only work if the dose steps are real — e-liquid labeling is unreliable. If withdrawal is your breaking point, a short, fixed-end taper or a switch to regulated NRT beats white-knuckling." },
+      ],
+      synthesis: "The evidence lean is abrupt-with-support; the honest caveat is that vaping research lags smoking research. Decide on your pattern: if the ritual is your hook, go abrupt and dispose of the device. If physical withdrawal has broken past attempts, use a short taper with a fixed end date — never an open-ended one.",
+    },
+  },
+
+  porn: {
+    chip: "Quit porn",
+    identity: "You act on your values.",
+    sub: (d) => `Day ${d} on protocol · started June 20`,
+    checkIn: "Check in — a values-consistent day",
+    checkedToast: (d) => `Checked in — day ${d}, living on your terms.`,
+    slipLabel: "Log a lapse",
+    slipToast: "Logged without judgment — shame fuels the cycle, noticing breaks it. Add the trigger to your pattern map when you're ready.",
+    outcomeMetric: "goal-consistent at 3 mo",
+    outcomeNote: "Self-reported. Users define their own success at onboarding — full abstinence or values-based reduction — and are measured against their own definition.",
+    wearable: {
+      metric: "Screen time after 22:00", value: "14 min", delta: "▼ 41 min vs. baseline week",
+      note: "Late-night solo screen time is the most-reported trigger window — yours is shrinking.",
+      source: "iOS Screen Time · 7-day avg",
+    },
+    protocols: [
+      { id: "pact", name: "ACT-based program (values + urge surfing)", source: "Clinical protocol · acceptance & commitment therapy", n: 1480, success: 31, grade: "B", upvotes: 1120,
+        gist: "Learn to observe urges without acting on them, while rebuilding the week around chosen values. Strongest trial evidence in this category.",
+        voices: "“I stopped fighting the urge and it lost its power. Sounds fake. Wasn't.” — 6 mo" },
+      { id: "pmind", name: "Mindfulness-based relapse prevention", source: "Clinical protocol · MBRP-adapted", n: 990, success: 27, grade: "B", upvotes: 760,
+        gist: "Daily 10-minute practice plus structured trigger mapping. Targets the stress-to-autopilot loop that precedes most lapses.",
+        voices: "“The pattern map showed me it was never about the content — it was Sunday-night dread.” — 4 mo" },
+      { id: "pblock", name: "Blockers + accountability partner", source: "Community protocol", n: 4310, success: 19, grade: "C", upvotes: 3480,
+        gist: "Device-level filters with a trusted person receiving alerts. Popular; works best as scaffolding alongside an inner-work protocol, not alone.",
+        voices: "“The blocker bought me the pause. The pause is where the choice lives.” — 3 mo" },
+    ],
+    board: {
+      question: "Should my goal be total abstinence, or values-based reduction?",
+      consensus: "Genuinely split · depends on your pattern",
+      experts: [
+        { role: "Clinical psychologist", name: "Behavioral & ACT specialist", stance: "caveat", grade: "B",
+          view: "The best-supported programs target compulsion, not consumption per se: act in line with your values, whatever number that implies. Rigid vows create the abstinence-violation effect — one lapse reads as total failure, shame spikes, and shame is the fuel of the cycle." },
+        { role: "Psychiatrist", name: "Impulse-control & comorbidity", stance: "caveat", grade: "B",
+          view: "Compulsive sexual behavior often rides on top of anxiety, depression, or OCD-spectrum patterns. Before choosing a goal shape, screen for what the behavior is regulating — treating the driver changes what's realistic." },
+        { role: "Recovery coach", name: "Structured recovery programs", stance: "no", grade: "C",
+          view: "For heavily entrenched patterns, a clean 90-day reset gives the clearest signal and the simplest rule set. Moderation asks for a fresh decision at every exposure — that's a lot of doors to hold shut early on." },
+      ],
+      synthesis: "This is one of the few goals where success is self-defined, and the evidence says the shame spiral — not the lapse — is the real enemy. Severity decides: entrenched, escalating patterns respond to a bounded full reset; milder conflict-with-values patterns do better with values-based reduction. Either way, track triggers, not just days.",
+    },
+  },
+
+  weight: {
+    chip: "Lose weight",
+    identity: "You keep promises to your body.",
+    sub: (d) => `Day ${d} on protocol · started June 20`,
+    checkIn: "Check in — plan followed today",
+    checkedToast: (d) => `Checked in — day ${d}. The trend is what counts.`,
+    slipLabel: "Log an off-plan day",
+    slipToast: "Logged. One day never decides the outcome — the trend does. Tomorrow is already on the plan.",
+    outcomeMetric: "≥5% weight loss at 6 mo",
+    outcomeNote: "Verified against connected-scale trend data where available; self-reported otherwise. Non-responders count as unsuccessful.",
+    wearable: {
+      metric: "Weight trend", value: "−2.9 kg", delta: "▼ steady since day 1",
+      note: "The 7-day trend line is the signal — daily swings are mostly water, not fat.",
+      source: "Withings scale · trailing avg",
+    },
+    protocols: [
+      { id: "wglp", name: "GLP-1 + strength training", source: "Clinical protocol · physician-supervised", n: 2140, success: 54, grade: "A", upvotes: 1650,
+        gist: "Medication handles appetite; resistance training protects muscle so the loss is fat, not strength. The pairing is the protocol.",
+        voices: "“The med quieted the food noise. Lifting made sure I kept what matters.” — 8 mo" },
+      { id: "wprot", name: "Protein-first + resistance training", source: "Community protocol · evidence-aligned", n: 5680, success: 33, grade: "B", upvotes: 3910,
+        gist: "Anchor every meal on protein, lift two to three times weekly, let the rest follow. Simple rules that survive real life.",
+        voices: "“No forbidden foods, one rule at every meal. First plan I didn't quit.” — 7 mo" },
+      { id: "wmed", name: "Mediterranean pattern + daily walking", source: "Clinical protocol · long-term trial data", n: 4470, success: 29, grade: "A", upvotes: 2230,
+        gist: "The best long-term adherence data of any eating pattern, paired with a daily walk. Slower, but it's the one people are still doing at year two.",
+        voices: "“Slowest loss of anything I tried, and the only one that stuck.” — 12 mo" },
+    ],
+    board: {
+      question: "Should I start with a GLP-1 medication, or try lifestyle changes first?",
+      consensus: "Split on sequence · unanimous on the off-ramp",
+      experts: [
+        { role: "Physician", name: "Obesity medicine", stance: "caveat", grade: "A",
+          view: "Depends on where you're starting. With significant health markers in play, medication first is defensible and effective. Closer to the margin, the risk-benefit favors building the lifestyle base before adding a long-term drug." },
+        { role: "Dietitian", name: "Clinical nutrition", stance: "yes", grade: "B",
+          view: "Habits first, regardless of the medication decision — because the medication era ends, and what you eat and lift on that day determines everything after. Lifestyle isn't the alternative to GLP-1; it's the prerequisite for keeping its results." },
+        { role: "Pharmacologist", name: "Clinical pharmacology", stance: "caveat", grade: "A",
+          view: "These drugs work while taken. Trial data shows most weight returns after stopping when no habit structure exists underneath. If you start one, plan the off-ramp on day one, not when the prescription ends." },
+      ],
+      synthesis: "The real finding is that this isn't either/or: medication moves the number, habits decide whether it stays moved. All three converge on the off-ramp as the danger zone — most regain happens after stopping, and almost nobody plans for it. Whichever door you enter through, the exit protocol is the part to take seriously.",
+    },
+  },
+
+  gambling: {
+    chip: "Stop gambling",
+    identity: "You don't bet.",
+    sub: (d) => `Day ${d} bet-free · started June 20`,
+    checkIn: "Check in — bet-free today",
+    checkedToast: (d) => `Checked in — ${d} days without a bet.`,
+    slipLabel: "Log a bet",
+    slipToast: "Logged. One bet is a data point, not a collapse — your recovery continues.",
+    outcomeMetric: "bet-free at 6 mo",
+    outcomeNote: "Self-reported with follow-ups; optional verification via self-exclusion registers and bank gambling-blocks in the full app.",
+    wearable: {
+      metric: "Money not wagered", value: "CHF 340", delta: "▲ growing since day 1",
+      note: "Based on your average stake before quitting. This is real money still in your account.",
+      source: "Self-tracked baseline",
+    },
+    protocols: [
+      { id: "gcbt", name: "CBT for gambling (thought-trap training)", source: "Clinical protocol · best-evidenced approach", n: 1130, success: 36, grade: "A", upvotes: 720,
+        gist: "Targets the beliefs that drive betting — near-miss thinking, chasing losses, illusions of control — plus urge management.",
+        voices: "“Learning why a near-miss feels like almost-winning broke the spell.” — 7 mo" },
+      { id: "gexcl", name: "Self-exclusion + blockers everywhere", source: "Community protocol · register + device level", n: 3240, success: 29, grade: "B", upvotes: 2380,
+        gist: "National self-exclusion register, gambling-site blockers on every device, betting apps deleted, marketing unsubscribed. Friction as medicine.",
+        voices: "“I made relapse a 45-minute project instead of a 45-second one. That gap saved me.” — 5 mo" },
+      { id: "gbank", name: "Bank gambling-block + money buddy", source: "Community protocol", n: 2610, success: 23, grade: "C", upvotes: 1940,
+        gist: "Activate your bank's gambling-transaction block and give a trusted person visibility of your accounts for the first 90 days.",
+        voices: "“Knowing my brother could see the statements changed the math in my head.” — 4 mo" },
+    ],
+    board: {
+      question: "Should I hand control of my money to someone else while I quit?",
+      consensus: "2 of 3 say yes early · all agree it must be temporary",
+      experts: [
+        { role: "Psychologist", name: "Gambling & impulse control", stance: "yes", grade: "B",
+          view: "Early recovery is about removing decision points, not winning them. Every moment of friction between impulse and bet is protective — external money control is the strongest friction available." },
+        { role: "Financial counselor", name: "Debt & money management", stance: "yes", grade: "B",
+          view: "Structure it formally: bank blocks, a co-signed access rule, or a trusted-person arrangement with written terms. Informal handovers breed resentment and secret accounts." },
+        { role: "Addiction psychiatrist", name: "Recovery autonomy", stance: "caveat", grade: "C",
+          view: "External control works short-term but isn't recovery — it's scaffolding. Agree on a restoration plan from day one, or the arrangement infantilizes and eventually gets abandoned in secret." },
+      ],
+      synthesis: "Friction is the treatment early; restored autonomy is the treatment later. The evidence-aligned move: maximum external control in the first 90 days with a written, dated plan for handing it back in stages. Control without a return path fails; autonomy without scaffolding relapses.",
+    },
+  },
+
+  scrolling: {
+    chip: "Less scrolling",
+    identity: "You own your attention.",
+    sub: (d) => `Day ${d} on protocol · started June 20`,
+    checkIn: "Check in — under my screen budget",
+    checkedToast: (d) => `Checked in — day ${d} of owning your hours.`,
+    slipLabel: "Log a binge",
+    slipToast: "Logged. Attention returns the moment you notice — and you noticed.",
+    outcomeMetric: "≥30% less social time at 3 mo",
+    outcomeNote: "Auto-verified against Screen Time / Digital Wellbeing data — the only goal here with built-in objective measurement.",
+    wearable: {
+      metric: "Social apps, daily avg", value: "1 h 04 m", delta: "▼ 52 min vs. baseline week",
+      note: "That's six hours a week coming back to you. The question the protocol asks: coming back for what?",
+      source: "iOS Screen Time · 7-day avg",
+    },
+    protocols: [
+      { id: "sgray", name: "Grayscale + home-screen strip", source: "Community protocol · friction-based", n: 6820, success: 34, grade: "B", upvotes: 4310,
+        gist: "Phone in grayscale, social apps off the home screen, notifications off. Makes the slot machine boring instead of forbidden.",
+        voices: "“Gray Instagram is just… a list. I forgot to open it by week two.” — 4 mo" },
+      { id: "sbed", name: "Phone out of bedroom + morning delay", source: "Community protocol · sleep-anchored", n: 5140, success: 31, grade: "B", upvotes: 3670,
+        gist: "Charge the phone outside the bedroom; no social apps until after breakfast. Protects the two highest-risk windows.",
+        voices: "“The first hour of the day being mine changed the whole day.” — 6 mo" },
+      { id: "sdumb", name: "Dumbphone weekends", source: "Community protocol", n: 2280, success: 26, grade: "C", upvotes: 2890,
+        gist: "SIM into a basic phone Friday night to Monday morning. Full contact, zero feed.",
+        voices: "“Weekends got longer. I didn't know they could do that.” — 3 mo" },
+    ],
+    board: {
+      question: "Should I delete the apps entirely, or set limits?",
+      consensus: "Split on deletion · unanimous on the bedroom",
+      experts: [
+        { role: "Behavioral psychologist", name: "Habit & friction design", stance: "yes", grade: "B",
+          view: "Limits ask willpower to win a hundred small fights a day against software designed by thousands of engineers to win them. Deletion fights once. For compulsive patterns, remove the slot machine." },
+        { role: "Media researcher", name: "Digital behavior & displacement", stance: "no", grade: "B",
+          view: "These apps carry real social ties, and deletion studies show displacement — the time often flows to other screens, not to life. Restructure the feed (unfollow ruthlessly) and the time before removing the connection." },
+        { role: "Sleep specialist", name: "Circadian & sleep health", stance: "caveat", grade: "A",
+          view: "Whichever you choose, the phone leaves the bedroom. Late-night scrolling delays sleep timing and fragments it, and this is the single best-evidenced intervention in the entire category." },
+      ],
+      synthesis: "The honest split: deletion wins for compulsive use, curation wins when the apps carry your real relationships. The non-negotiable both agree on is spatial, not digital — where the phone sleeps matters more than which apps are on it. Start with the bedroom rule, then decide deletion versus limits based on what week two tells you.",
+    },
+  },
+
+  bp: {
+    chip: "Lower my BP",
+    identity: "You take your numbers seriously.",
+    sub: (d) => `Day ${d} on protocol · started June 20`,
+    checkIn: "Log today's reading + habits",
+    checkedToast: (d) => `Logged — day ${d}. The 7-day average is the number that counts.`,
+    slipLabel: "Log an off-plan day",
+    slipToast: "Logged. Blood pressure responds to the month, not the day — stay with the trend.",
+    outcomeMetric: "≥5 mmHg systolic drop at 3 mo",
+    outcomeNote: "Verified via home cuff readings on a standardized protocol (seated, rested, 7-day morning average). Decision support, not medical advice.",
+    wearable: {
+      metric: "Home BP · 7-day avg", value: "134 / 86", delta: "▼ 6 mmHg systolic since day 1",
+      note: "A validated home cuff makes this the cheapest, hardest-to-fake outcome of any goal here.",
+      source: "Withings cuff · morning readings",
+    },
+    protocols: [
+      { id: "bdash", name: "DASH eating pattern + sodium awareness", source: "Clinical protocol · trial-proven", n: 3190, success: 41, grade: "A", upvotes: 1720,
+        gist: "The best-evidenced eating pattern for blood pressure, focused on what you add (vegetables, potassium) as much as what you cut.",
+        voices: "“Nobody told me it was mostly about eating more of the right things. That made it doable.” — 5 mo" },
+      { id: "bwalk", name: "Daily 30-minute brisk walk", source: "Clinical protocol · aerobic base", n: 4470, success: 33, grade: "A", upvotes: 2610,
+        gist: "The minimum effective dose of aerobic work, done daily. Boring, free, and it moves the number.",
+        voices: "“My cuff convinced me before my doctor did. The walks work.” — 6 mo" },
+      { id: "bbreath", name: "Device-guided slow breathing", source: "Clinical protocol · adjunct", n: 1560, success: 24, grade: "B", upvotes: 1130,
+        gist: "Ten minutes of paced breathing daily. Modest but real effect, and the easiest habit to actually keep.",
+        voices: "“The one thing I never skipped, because it's the one thing that felt like rest.” — 4 mo" },
+    ],
+    board: {
+      question: "Can I fix this with lifestyle, or do I need medication?",
+      consensus: "Not a dichotomy · thresholds decide",
+      experts: [
+        { role: "Cardiologist", name: "Hypertension specialist", stance: "caveat", grade: "A",
+          view: "Below certain thresholds, a serious 3-month lifestyle trial is reasonable and often works. Above them, delaying medication to 'try lifestyle first' costs artery-years — and the two were never in competition anyway." },
+        { role: "Dietitian", name: "Clinical nutrition", stance: "yes", grade: "A",
+          view: "Diet and weight changes move systolic pressure by amounts comparable to a first medication in trial data. Whatever the medication decision, this work is never wasted — it makes every other treatment work better." },
+        { role: "Pharmacologist", name: "Clinical pharmacology", stance: "caveat", grade: "B",
+          view: "Needing medication isn't failure, and starting it doesn't end the lifestyle work — combined, doses often come down later. The dangerous pattern is neither: measuring rarely and deciding never." },
+      ],
+      synthesis: "All three converge: lifestyle and medication are additive, not alternatives, and your home-cuff average — not a single office reading — is what should drive the decision with your doctor. The one wrong answer is delay at high numbers. Bring your 7-day average to the appointment; that data changes the conversation.",
+    },
+  },
+
+  cannabis: {
+    chip: "Quit cannabis",
+    identity: "You are clear-headed.",
+    sub: (d) => `Day ${d} cannabis-free · started June 20`,
+    checkIn: "Check in — clear today",
+    checkedToast: (d) => `Checked in — ${d} days clear.`,
+    slipLabel: "Log a slip",
+    slipToast: "Logged. A slip is a data point, not a reset — your quit continues.",
+    outcomeMetric: "cannabis-free at 6 mo",
+    outcomeNote: "Self-reported with follow-ups at 1, 3 and 6 months. Non-responders count as relapsed.",
+    wearable: {
+      metric: "Sleep quality score", value: "78", delta: "▲ 11 pts since day 14",
+      note: "Sleep usually dips for the first two weeks (REM rebound), then recovers above your old baseline — yours just did.",
+      source: "Oura · 7-night average",
+    },
+    protocols: [
+      { id: "cmet", name: "MET/CBT program", source: "Clinical protocol · best-evidenced", n: 1240, success: 33, grade: "A", upvotes: 680,
+        gist: "Motivational enhancement plus CBT — clarify your own reasons, then rebuild the routines that leaned on being high.",
+        voices: "“Turns out I wasn't addicted to weed as much as to switching off. CBT gave me other switches.” — 6 mo" },
+      { id: "ctaper", name: "Scheduled taper to a quit date", source: "Community protocol", n: 3480, success: 27, grade: "B", upvotes: 2540,
+        gist: "Step down amount and potency over 2–3 weeks toward a fixed date. Blunts withdrawal without becoming a permanent 'cutting down.'",
+        voices: "“The end date was the protocol. Without it I'd still be 'tapering.'” — 5 mo" },
+      { id: "ccold", name: "Clean stop + sleep toolkit", source: "Community protocol", n: 4110, success: 24, grade: "C", upvotes: 3120,
+        gist: "Hard stop with a two-week plan specifically for the rough sleep: wind-down routine, no revenge bedtime scrolling, patience.",
+        voices: "“Week one sleep was ugly. Knowing it was coming is why it didn't break me.” — 4 mo" },
+    ],
+    board: {
+      question: "Is cannabis withdrawal real — and do I need to taper?",
+      consensus: "Withdrawal real: 3 of 3 · taper: split",
+      experts: [
+        { role: "Psychiatrist", name: "Addiction psychiatry", stance: "yes", grade: "A",
+          view: "Cannabis withdrawal is a recognized syndrome — irritability, sleep disruption, appetite change, restlessness — peaking around days 2–6 and settling within two weeks for most. Real, unpleasant, and time-boxed." },
+        { role: "Behavioral psychologist", name: "Habit psychology", stance: "no", grade: "C",
+          view: "Tapers mostly manage the fear of stopping, not the stopping. Daily-use habits are ritual loops — evening joint, sleep crutch — and the loop survives a lower dose. Break the ritual, support the sleep." },
+        { role: "Sleep specialist", name: "Sleep medicine", stance: "caveat", grade: "B",
+          view: "The sleep rebound is where most quits die: two weeks of vivid dreams and poor sleep read as 'I can't sleep without it.' You can — plan for the rough fortnight instead of relapsing over it." },
+      ],
+      synthesis: "Unanimous: withdrawal is real but has an expiry date, and sleep is the battleground. Split on method: heavy long-term use may earn a short taper with a fixed end; moderate use does as well with a clean stop plus a sleep plan. Either way, the protocol is really a two-week sleep-protection plan wearing a quit plan's clothes.",
+    },
+  },
+
+  pouches: {
+    chip: "Quit pouches",
+    identity: "You don't need the buzz.",
+    sub: (d) => `Day ${d} nicotine-free · started June 20`,
+    checkIn: "Check in — pouch-free today",
+    checkedToast: (d) => `Checked in — ${d} days without the buzz.`,
+    slipLabel: "Log a slip",
+    slipToast: "Logged. A slip is a data point, not a reset — your quit continues.",
+    outcomeMetric: "nicotine-free at 6 mo",
+    outcomeNote: "Self-reported with follow-ups at 1, 3 and 6 months. Non-responders count as relapsed.",
+    wearable: {
+      metric: "Resting heart rate", value: "63 bpm", delta: "▼ 3 bpm since quit day",
+      note: "Nicotine keeps your baseline elevated even from pouches — your real resting rate is showing up.",
+      source: "Apple Watch · last 7 days",
+    },
+    protocols: [
+      { id: "ptaper", name: "Strength step-down, fixed end date", source: "Community protocol", n: 2870, success: 26, grade: "C", upvotes: 2140,
+        gist: "Step down pouch strength weekly toward a set quit date. Works only with an end date — open-ended tapers become the new habit.",
+        voices: "“11mg to 6 to 3 to done. The calendar did the deciding.” — 5 mo" },
+      { id: "pnrt", name: "Set date + regulated NRT swap", source: "Clinical protocol · adapted", n: 1690, success: 30, grade: "B", upvotes: 990,
+        gist: "Swap pouches for regulated NRT gum or lozenges on a schedule with a defined taper — trading an escalating habit for a designed exit.",
+        voices: "“The gum had an off-ramp built in. The pouches never did.” — 6 mo" },
+      { id: "pcold", name: "Cold turkey + pod", source: "Community protocol", n: 3520, success: 22, grade: "C", upvotes: 2760,
+        gist: "Hard stop with daily pod check-ins through the first 30 days, when between-dose restlessness peaks.",
+        voices: "“Day 3 to 6 was the war. The pod knew because they'd all been there that week too.” — 3 mo" },
+    ],
+    board: {
+      question: "Pouches aren't smoking — are they actually harmful enough to quit?",
+      consensus: "Less harmful ≠ harmless · 3 of 3 support quitting",
+      experts: [
+        { role: "Physician", name: "Preventive medicine", stance: "yes", grade: "B",
+          view: "Far less harmful than smoking is true and matters. But nicotine itself elevates heart rate and blood pressure, and long-term high-dose pouch data simply doesn't exist yet — you're the trial." },
+        { role: "Addiction specialist", name: "Nicotine dependence", stance: "yes", grade: "B",
+          view: "The clearest cost is the dependence itself: escalating strengths, anxiety between doses, a chemical leash on your mood and focus. Most pouch users I see aren't harm-reducing — they're dose-escalating." },
+        { role: "Public health researcher", name: "Tobacco harm reduction", stance: "caveat", grade: "C",
+          view: "For a smoker, switching to pouches is genuine harm reduction and I'll defend it. As a destination — especially for people who never smoked — the harm-reduction argument doesn't apply. Off-ramp, not parking lot." },
+      ],
+      synthesis: "Rare alignment: the 'safer than cigarettes' framing is true and beside the point if you're not using them to escape cigarettes. The dependence — escalating doses, between-dose edge — is the cost worth quitting. If you switched from smoking, honor that win, then take the exit.",
+    },
+  },
+
+  debt: {
+    chip: "Pay off debt",
+    identity: "You are building your way out.",
+    sub: (d) => `Day ${d} on plan · started June 20`,
+    checkIn: "Check in — no new debt today",
+    checkedToast: (d) => `Checked in — day ${d}. The trend is compounding for you now.`,
+    slipLabel: "Log an impulse buy",
+    slipToast: "Logged. The plan is built to absorb a bad day — it's the trend that compounds.",
+    outcomeMetric: "balance down ≥20% at 6 mo",
+    outcomeNote: "Self-reported balances at follow-ups; bank-linked verification in the full app. Proof the engine works beyond health.",
+    wearable: {
+      metric: "Debt balance trend", value: "−CHF 1,240", delta: "▼ steadily since day 1",
+      note: "Every payment now works twice — reducing the balance and shrinking next month's interest.",
+      source: "Self-tracked · monthly statements",
+    },
+    protocols: [
+      { id: "dsnow", name: "Snowball — smallest balance first", source: "Community protocol · behavior-backed", n: 5230, success: 38, grade: "B", upvotes: 4180,
+        gist: "Kill the smallest debt first regardless of interest rate, then roll its payment into the next. Mathematically imperfect, motivationally superior.",
+        voices: "“Closing that first card was the first financial win of my adult life. I was unstoppable after.” — 8 mo" },
+      { id: "daval", name: "Avalanche — highest interest first", source: "Financial protocol · math-optimal", n: 3610, success: 31, grade: "B", upvotes: 2470,
+        gist: "Attack the highest-rate debt first. Cheapest path in total interest — if you stay on it long enough to collect the savings.",
+        voices: "“Spreadsheet-brain approach. Saved me real money because I'm the type who sticks.” — 9 mo" },
+      { id: "denv", name: "Cash-envelope month + pod", source: "Community protocol · reset", n: 2940, success: 27, grade: "C", upvotes: 2210,
+        gist: "One month of cash-only spending in envelopes to expose where money leaks, with a pod comparing notes weekly.",
+        voices: "“I found CHF 400 a month I couldn't account for. The envelopes found it in two weeks.” — 4 mo" },
+    ],
+    board: {
+      question: "Snowball or avalanche — which should I actually use?",
+      consensus: "Math vs. behavior · honest split",
+      experts: [
+        { role: "Behavioral economist", name: "Decision science", stance: "yes", grade: "B",
+          view: "Field data favors snowball for completion: closed accounts create visible wins, and quitting the plan is the expensive event — far more expensive than suboptimal ordering. Optimize for staying in the game." },
+        { role: "Financial advisor", name: "Personal finance", stance: "no", grade: "A",
+          view: "The math isn't debatable — highest rate first minimizes total interest, and with large rate gaps the difference is real money. If your discipline is solid, avalanche and don't look back." },
+        { role: "Psychologist", name: "Motivation & adherence", stance: "caveat", grade: "C",
+          view: "The right method is whichever one you'll still be executing in month six. Your history answers that better than any calculator — have you finished long unrewarding plans before, or do you need the wins?" },
+      ],
+      synthesis: "Both camps are right about different things: avalanche wins the math, snowball wins the completion data — and an abandoned avalanche costs more than a finished snowball. The evidence-flavored hybrid: kill one small debt first for the momentum, then switch to avalanche for the savings. Know yourself, then pick.",
+    },
+  },
 };
 
 // ─── Small pieces ────────────────────────────────────────────────
@@ -189,14 +558,99 @@ function BreathRing({ day }) {
   );
 }
 
+const TRIGGER_OPTIONS = ["Stress", "Boredom", "Late night", "Social setting", "Argument", "Fatigue"];
+
+const WHYS = [
+  "Present and healthy for the people I love",
+  "Mornings that belong to me",
+  "Proof that I keep promises to myself",
+];
+
+function Overlay({ children }) {
+  return (
+    <div style={{ position: "absolute", inset: 0, background: "rgba(23,33,30,0.55)", display: "flex", alignItems: "center", justifyContent: "center", padding: 20, zIndex: 10, borderRadius: 28 }}>
+      <div style={{ background: T.surface, borderRadius: 20, padding: 20, width: "100%", maxWidth: 330, boxShadow: "0 12px 40px rgba(0,0,0,0.3)" }}>{children}</div>
+    </div>
+  );
+}
+
+function SOSOverlay({ onClose, onLogTrigger, onPod }) {
+  const [secs, setSecs] = useState(90);
+  useEffect(() => {
+    if (secs <= 0) return;
+    const t = setTimeout(() => setSecs(secs - 1), 1000);
+    return () => clearTimeout(t);
+  }, [secs]);
+  const done = secs <= 0;
+  return (
+    <Overlay>
+      {!done ? (
+        <div style={{ textAlign: "center" }}>
+          <div style={{ fontFamily: displayStack, fontStyle: "italic", fontSize: 20 }}>The urge is a wave.</div>
+          <div style={{ fontSize: 13, color: T.muted, marginTop: 4, lineHeight: 1.5 }}>
+            It peaks, then it passes — usually within minutes. You don't have to fight it. Just watch it.
+          </div>
+          <div className="breathe" style={{ width: 120, height: 120, borderRadius: "50%", background: T.breathSoft, margin: "18px auto", display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <span style={{ fontFamily: displayStack, fontSize: 34, color: T.breath }}>{secs}</span>
+          </div>
+          <div style={{ fontSize: 13, color: T.ink, lineHeight: 1.7, textAlign: "left" }}>
+            1 · Breathe out longer than you breathe in.<br />
+            2 · Name where you feel the urge in your body.<br />
+            3 · Watch it like weather — it's passing through.
+          </div>
+          <div style={{ marginTop: 14, padding: 12, background: T.bg, borderRadius: 12, textAlign: "left" }}>
+            <div style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: "0.08em", textTransform: "uppercase", color: T.muted }}>Your reasons — your own words, day 1</div>
+            {WHYS.map(w => (
+              <div key={w} style={{ fontFamily: displayStack, fontStyle: "italic", fontSize: 14, marginTop: 6, color: T.ink }}>“{w}”</div>
+            ))}
+          </div>
+          <button onClick={onPod} style={{ width: "100%", marginTop: 14, padding: "12px 0", borderRadius: 12, border: "none", background: T.blue, color: "#fff", fontWeight: 800, fontSize: 13.5, fontFamily: fontStack, cursor: "pointer" }}>
+            Text your pod — "having a moment"
+          </button>
+          <button onClick={onClose} style={{ marginTop: 10, border: "none", background: "transparent", color: T.muted, fontWeight: 700, fontSize: 12.5, cursor: "pointer", fontFamily: fontStack }}>Close</button>
+        </div>
+      ) : (
+        <div style={{ textAlign: "center" }}>
+          <div style={{ fontFamily: displayStack, fontStyle: "italic", fontSize: 20 }}>It passed. You're still here.</div>
+          <div style={{ fontSize: 13, color: T.muted, marginTop: 6, lineHeight: 1.5 }}>
+            A resisted urge is a win — and data. Want to note what set it off?
+          </div>
+          <div style={{ display: "flex", gap: 8, marginTop: 14 }}>
+            <button onClick={onLogTrigger} style={{ flex: 1, padding: "11px 0", borderRadius: 12, border: "none", background: T.breath, color: "#fff", fontWeight: 800, fontFamily: fontStack, fontSize: 13.5, cursor: "pointer" }}>Log the trigger</button>
+            <button onClick={onClose} style={{ flex: 1, padding: "11px 0", borderRadius: 12, border: `1.5px solid ${T.line}`, background: "transparent", color: T.ink, fontWeight: 800, fontFamily: fontStack, fontSize: 13.5, cursor: "pointer" }}>Done</button>
+          </div>
+        </div>
+      )}
+    </Overlay>
+  );
+}
+
+function TriggerPicker({ mode, onPick, onClose }) {
+  return (
+    <Overlay>
+      <div style={{ fontFamily: displayStack, fontSize: 18 }}>{mode === "slip" ? "What preceded it?" : "What set it off?"}</div>
+      <div style={{ fontSize: 12.5, color: T.muted, marginTop: 4, lineHeight: 1.5 }}>
+        No judgment — this builds your pattern map, so support can arrive before the risk window instead of after it.
+      </div>
+      <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginTop: 14 }}>
+        {TRIGGER_OPTIONS.map(t => (
+          <button key={t} onClick={() => onPick(t)} style={{ padding: "8px 14px", borderRadius: 999, border: `1.5px solid ${T.line}`, background: T.bg, fontWeight: 800, fontSize: 13, fontFamily: fontStack, color: T.ink, cursor: "pointer" }}>{t}</button>
+        ))}
+      </div>
+      <button onClick={onClose} style={{ marginTop: 14, border: "none", background: "transparent", color: T.muted, fontWeight: 700, fontSize: 12.5, cursor: "pointer", fontFamily: fontStack }}>Skip</button>
+    </Overlay>
+  );
+}
+
 const POD = [
-  { initials: "MK", name: "Marta", day: 12, checked: true },
-  { initials: "JT", name: "Jonas", day: 9, checked: true },
-  { initials: "AL", name: "Aline", day: 31, checked: false },
+  { initials: "MK", name: "Marta", day: 12, checked: true, goal: "Alcohol-free" },
+  { initials: "JT", name: "Jonas", day: 9, checked: true, goal: "Lose weight" },
+  { initials: "AL", name: "Aline", day: 31, checked: false, goal: "Goal private" },
 ];
 
 // ─── Tabs ────────────────────────────────────────────────────────
-function TodayTab({ g, day, checked, setChecked, tokens, setTokens, toast }) {
+function TodayTab({ g, day, checked, setChecked, tokens, toast, onSlip, onSOS, triggers }) {
+  const maxTrig = Math.max(...Object.values(triggers), 1);
   return (
     <div>
       <div style={{ textAlign: "center", padding: "20px 0 6px" }}>
@@ -211,10 +665,7 @@ function TodayTab({ g, day, checked, setChecked, tokens, setTokens, toast }) {
             fontWeight: 800, fontSize: 15, fontFamily: fontStack }}>
           {checked ? "✓ Checked in today" : g.checkIn}
         </button>
-        <button onClick={() => {
-            if (tokens > 0) { setTokens(tokens - 1); toast(g.slipToast); }
-            else { toast("Out of slip tokens this month. Your pod has been looped in for support."); }
-          }}
+        <button onClick={onSlip}
           style={{ padding: "14px 16px", borderRadius: 14, border: `1.5px solid ${T.coral}`, cursor: "pointer",
             background: "transparent", color: T.coral, fontWeight: 800, fontSize: 14, fontFamily: fontStack }}>
           {g.slipLabel}
@@ -227,6 +678,26 @@ function TodayTab({ g, day, checked, setChecked, tokens, setTokens, toast }) {
         ))}
         <span>— a slip never resets your count.</span>
       </div>
+
+      <button onClick={onSOS} style={{ width: "100%", marginTop: 14, padding: "13px 0", borderRadius: 14, border: "none", cursor: "pointer", background: T.blueSoft, color: T.blue, fontWeight: 800, fontSize: 14.5, fontFamily: fontStack }}>
+        Urge SOS — ride it out · 90 seconds
+      </button>
+
+      <SectionLabel>Your pattern · what precedes your urges</SectionLabel>
+      <Card>
+        {Object.entries(triggers).sort((a, b) => b[1] - a[1]).slice(0, 3).map(([name, count]) => (
+          <div key={name} style={{ display: "flex", alignItems: "center", gap: 10, padding: "5px 0" }}>
+            <div style={{ width: 96, fontSize: 12.5, fontWeight: 700, color: T.ink }}>{name}</div>
+            <div style={{ flex: 1, height: 8, background: T.line, borderRadius: 999 }}>
+              <div style={{ width: `${(count / maxTrig) * 100}%`, height: "100%", background: T.amber, borderRadius: 999 }} />
+            </div>
+            <div style={{ width: 18, fontSize: 12, fontWeight: 800, color: T.muted, textAlign: "right" }}>{count}</div>
+          </div>
+        ))}
+        <div style={{ fontSize: 12, color: T.muted, marginTop: 8, lineHeight: 1.5 }}>
+          Built from slips and resisted urges. In the full app, your reminders arrive just before your risk windows.
+        </div>
+      </Card>
 
       <SectionLabel>Body signal · one metric that matters for this goal</SectionLabel>
       <Card>
@@ -257,13 +728,16 @@ function TodayTab({ g, day, checked, setChecked, tokens, setTokens, toast }) {
         </div>
       </Card>
 
-      <SectionLabel>Your pod · 4 on the same goal</SectionLabel>
+      <SectionLabel>Your pod · different goals, same fight</SectionLabel>
       <Card>
         {POD.map((p, i) => (
           <div key={p.initials} style={{ display: "flex", alignItems: "center", gap: 12, padding: "10px 0", borderBottom: i < POD.length - 1 ? `1px solid ${T.line}` : "none" }}>
             <div style={{ width: 36, height: 36, borderRadius: "50%", background: T.blueSoft, color: T.blue, display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 800, fontSize: 13 }}>{p.initials}</div>
             <div style={{ flex: 1 }}>
-              <div style={{ fontWeight: 700, fontSize: 14 }}>{p.name} <span style={{ color: T.muted, fontWeight: 600 }}>· day {p.day}</span></div>
+              <div style={{ fontWeight: 700, fontSize: 14 }}>
+                {p.name} <span style={{ color: T.muted, fontWeight: 600 }}>· day {p.day}</span>
+                <span style={{ fontSize: 10.5, fontWeight: 800, color: p.goal === "Goal private" ? T.muted : T.blue, background: p.goal === "Goal private" ? T.bg : T.blueSoft, padding: "2px 7px", borderRadius: 999, marginLeft: 6, verticalAlign: "middle" }}>{p.goal}</span>
+              </div>
               <div style={{ fontSize: 12, color: p.checked ? T.breath : T.amber, fontWeight: 700 }}>{p.checked ? "Checked in today" : "Not checked in yet"}</div>
             </div>
             {!p.checked && (
@@ -419,7 +893,7 @@ function BoardTab({ g }) {
 // ─── App shell ───────────────────────────────────────────────────
 function App() {
   const [goalKey, setGoalKey] = useState("smoking");
-  const [pickerOpen, setPickerOpen] = useState(false);
+  const [pickerOpen, setPickerOpen] = useState(true);
   const [tab, setTab] = useState("today");
   const [checked, setChecked] = useState(false);
   const [tokens, setTokens] = useState(2);
@@ -428,8 +902,22 @@ function App() {
   const [following, setFollowing] = useState({});
   const [expanded, setExpanded] = useState(null);
   const [toastMsg, setToastMsg] = useState(null);
+  const [triggers, setTriggers] = useState({ "Stress": 3, "Late night": 2, "Social setting": 1 });
+  const [sosOpen, setSosOpen] = useState(false);
+  const [pickerMode, setPickerMode] = useState(null);
   const day = 12;
   const g = GOALS[goalKey];
+
+  const handleSlip = () => {
+    if (tokens > 0) setPickerMode("slip");
+    else setToastMsg("Out of slip tokens this month. Your pod has been looped in for support.");
+  };
+  const handleTriggerPick = (t) => {
+    setTriggers({ ...triggers, [t]: (triggers[t] || 0) + 1 });
+    if (pickerMode === "slip") { setTokens(tokens - 1); setToastMsg(g.slipToast); }
+    else setToastMsg("Noted — a resisted urge is a win worth counting.");
+    setPickerMode(null);
+  };
 
   useEffect(() => {
     if (!toastMsg) return;
@@ -438,8 +926,9 @@ function App() {
   }, [toastMsg]);
 
   const switchGoal = (k) => {
-    setGoalKey(k); setPickerOpen(false); setChecked(false); setTokens(2);
+    setGoalKey(k); setChecked(false); setTokens(2);
     setVotes({}); setFollowing({}); setExpanded(null); setTab("today");
+    setTriggers({ "Stress": 3, "Late night": 2, "Social setting": 1 });
     setToastMsg(`Switched to “${GOALS[k].chip}” — same mechanics, new content.`);
   };
 
@@ -453,35 +942,41 @@ function App() {
         button:focus-visible { outline: 3px solid ${T.blue}; outline-offset: 2px; }
       `}</style>
 
-      <div style={{ maxWidth: 400, margin: "0 auto", background: T.bg, borderRadius: 28, border: `1px solid ${T.line}`, overflow: "hidden", boxShadow: "0 12px 40px rgba(23,33,30,0.12)" }}>
+      <div style={{ maxWidth: 400, margin: "0 auto", background: T.bg, borderRadius: 28, border: `1px solid ${T.line}`, overflow: "hidden", boxShadow: "0 12px 40px rgba(23,33,30,0.12)", position: "relative" }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "16px 18px 0" }}>
           <div style={{ fontWeight: 800, fontSize: 16, letterSpacing: "0.14em" }}>
             KN<span style={{ color: T.breath }}>D</span>
           </div>
           <button onClick={() => setPickerOpen(!pickerOpen)}
-            style={{ fontSize: 11.5, fontWeight: 800, color: T.muted, background: T.surface, border: `1px solid ${T.line}`, padding: "4px 10px", borderRadius: 999, cursor: "pointer", fontFamily: fontStack }}>
-            {g.chip} ▾
+            style={{ fontSize: 12, fontWeight: 800, color: T.breath, background: T.breathSoft, border: `1.5px solid ${T.breath}`, padding: "5px 12px", borderRadius: 999, cursor: "pointer", fontFamily: fontStack }}>
+            Goal: {g.chip} {pickerOpen ? "▴" : "▾"}
           </button>
         </div>
 
         {pickerOpen && (
-          <div style={{ display: "flex", gap: 6, padding: "10px 18px 0", flexWrap: "wrap" }}>
-            {Object.entries(GOALS).map(([k, cfg]) => (
-              <button key={k} onClick={() => switchGoal(k)}
-                style={{ fontSize: 12, fontWeight: 800, fontFamily: fontStack, cursor: "pointer",
-                  padding: "6px 12px", borderRadius: 999,
-                  border: k === goalKey ? "none" : `1.5px solid ${T.line}`,
-                  background: k === goalKey ? T.breath : T.surface,
-                  color: k === goalKey ? "#fff" : T.ink }}>
-                {cfg.chip}
-              </button>
-            ))}
+          <div style={{ padding: "10px 18px 0" }}>
+            <div style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: "0.08em", textTransform: "uppercase", color: T.muted, marginBottom: 6 }}>
+              Choose your goal — tap to switch
+            </div>
+            <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+              {Object.entries(GOALS).map(([k, cfg]) => (
+                <button key={k} onClick={() => switchGoal(k)}
+                  style={{ fontSize: 12, fontWeight: 800, fontFamily: fontStack, cursor: "pointer",
+                    padding: "7px 13px", borderRadius: 999,
+                    border: k === goalKey ? "none" : `1.5px solid ${T.line}`,
+                    background: k === goalKey ? T.breath : T.surface,
+                    color: k === goalKey ? "#fff" : T.ink }}>
+                  {cfg.chip}
+                </button>
+              ))}
+            </div>
           </div>
         )}
 
         <div style={{ padding: "0 16px 16px", minHeight: 560 }}>
           {tab === "today" && (
-            <TodayTab g={g} day={day} checked={checked} setChecked={setChecked} tokens={tokens} setTokens={setTokens} toast={setToastMsg} />
+            <TodayTab g={g} day={day} checked={checked} setChecked={setChecked} tokens={tokens} toast={setToastMsg}
+              onSlip={handleSlip} onSOS={() => setSosOpen(true)} triggers={triggers} />
           )}
           {tab === "protocols" && (
             <ProtocolsTab g={g} sort={sort} setSort={setSort} votes={votes} setVotes={setVotes}
@@ -495,6 +990,9 @@ function App() {
             {toastMsg}
           </div>
         )}
+
+        {sosOpen && <SOSOverlay onClose={() => setSosOpen(false)} onLogTrigger={() => { setSosOpen(false); setPickerMode("urge"); }} onPod={() => setToastMsg("Sent with a prefilled note — Marta usually replies within minutes. Keep breathing; the wave is already passing.")} />}
+        {pickerMode && <TriggerPicker mode={pickerMode} onPick={handleTriggerPick} onClose={() => setPickerMode(null)} />}
 
         <div style={{ display: "flex", borderTop: `1px solid ${T.line}`, background: T.surface, position: "sticky", bottom: 0 }}>
           {[["today", "Today"], ["protocols", "Protocols"], ["board", "Board"]].map(([k, label]) => (
